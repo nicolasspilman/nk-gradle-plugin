@@ -82,8 +82,7 @@ class NetKernelPublishPackage extends Copy {
         def packageRepoFile = new File("${packageDir}/${packageFile}")
         
         xml.package() {
-            name(packageDef['name'])
-
+            xml.name(packageDef['name'])
             packagedescr('Description')
             runlevel(5)
             section()
@@ -92,7 +91,7 @@ class NetKernelPublishPackage extends Copy {
             license()
             version(packageDef['version'])
             versiondescr()
-            size((int) Math.floor(packageRepoFile.length() / 1000))
+            xml.size((int) Math.floor(packageRepoFile.length() / 1000))
                         
             filename(packageFile)
             def firstLetter = packageFile.substring(0,1).toUpperCase()
