@@ -30,6 +30,7 @@ import net.bosatsu.gradle.tasks.NetKernelPackage
 import net.bosatsu.gradle.tasks.NetKernelPackageManifestFile
 import net.bosatsu.gradle.tasks.NetKernelPackageModuleFile
 import net.bosatsu.gradle.tasks.NetKernelPublishPackage
+import net.bosatsu.gradle.tasks.NetKernelSynchronize;
 import net.bosatsu.gradle.tasks.NetKernelVerifyRepository
 import net.bosatsu.gradle.tasks.NetKernelGenerateRepoConnectionSettings
 
@@ -146,6 +147,8 @@ class NetKernelPlugin implements Plugin<Project> {
             }
             
             project.tasks.nkrepoconnection.dependsOn 'nkrepoconnectionsettings'
+            
+            project.tasks.add(name: "nksynchronize", type: NetKernelSynchronize)
             
             // TODO: Publish depends on package?
         }
