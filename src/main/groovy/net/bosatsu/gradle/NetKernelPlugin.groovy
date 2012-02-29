@@ -148,10 +148,10 @@ class NetKernelPlugin implements Plugin<Project> {
             
             project.tasks.nkrepoconnection.dependsOn 'nkrepoconnectionsettings'
             
-            project.tasks.add(name: "nksynchronize", type: NetKernelSynchronize)
-            
             // TODO: Publish depends on package?
         }
+        
+        project.tasks.add(name: "nksynchronize", type: NetKernelSynchronize)
         
         project.afterEvaluate {
             unresolvedDependencies.each { d ->
