@@ -1,19 +1,19 @@
 apply {
-    plugin 'groovy'
-    plugin 'maven'
+  plugin 'groovy'
+  plugin 'maven'
 }
 
 repositories { 
-  	mavenCentral()
+  mavenCentral()
 }
 
 group = 'net.bosatsu.gradle'
-version = '0.0.13'
+version = '0.0.14-SNAPSHOT'
 
 dependencies {
-    compile gradleApi()
-	// TODO: Investigate if we can use the Groovy that comes w/ NetKernel to avoid
-	// version problems.
-    groovy localGroovy()
-  	testCompile 'junit:junit:4.7'
+  compile gradleApi()
+  // TODO: Investigate if we can use the Groovy that comes w/ NetKernel to avoid
+  // version problems.
+  groovy localGroovy()
+  testCompile 'junit:junit:4.7'
 }

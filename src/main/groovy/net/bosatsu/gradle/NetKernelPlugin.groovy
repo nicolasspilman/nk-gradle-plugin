@@ -22,10 +22,9 @@ import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.tasks.bundling.Zip
 
 import net.bosatsu.util.JarInfoHelper
-import net.bosatsu.util.JarInfo
 import net.bosatsu.util.netkernel.ModuleHelper
-import net.bosatsu.util.netkernel.RepoHelper
 
+import net.bosatsu.gradle.tasks.NetKernelInstallOrUpdatePackage
 import net.bosatsu.gradle.tasks.NetKernelPackage
 import net.bosatsu.gradle.tasks.NetKernelPackageManifestFile
 import net.bosatsu.gradle.tasks.NetKernelPackageModuleFile
@@ -116,6 +115,12 @@ class NetKernelPlugin implements Plugin<Project> {
                packageTask = packageTaskName
                initialize()
             }
+            
+            project.tasks.add(name: "nkinstallorupdate", type: NetKernelInstallOrUpdatePackage) 
+            {
+               packageName = name
+               packageVersion = p['version']
+            }
          }
 
          project.tasks.add('nkpackage') {
@@ -149,6 +154,7 @@ class NetKernelPlugin implements Plugin<Project> {
 
             project.tasks.nkrepoconnection.dependsOn 'nkrepoconnectionsettings'
             project.tasks.add(name: "nksynchronize", type: NetKernelSynchronize)
+
          }
          // TODO: Publish depends on package?
       }

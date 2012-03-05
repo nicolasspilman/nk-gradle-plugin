@@ -19,19 +19,19 @@ package net.bosatsu.gradle.tasks
 import org.gradle.api.DefaultTask
 
 class NetKernelSynchronize extends DefaultTask {
-   
-    static def BASE_URI = "netkernelbaseuri"
-    static def SLEEP_TIME = 5
-	
-    @org.gradle.api.tasks.TaskAction
-    void synchronize() {
-       
-       if(project.hasProperty(BASE_URI)) {
-          def url = "${project.getProperty(BASE_URI)}/tools/apposite/unattended/v1/synchronize"
-          println "Synchronizing local NetKernel instance.."
-          println new URL(url).text
-	  println "Waiting for $SLEEP_TIME seconds to let NetKernel reindex.."
-          sleep SLEEP_TIME * 1000
-       }
-    }
+
+   static def BASE_URI = "netkernelbaseuri"
+   static def SLEEP_TIME = 5
+
+   @org.gradle.api.tasks.TaskAction
+   void synchronize() {
+
+      if(project.hasProperty(BASE_URI)) {
+         def url = "${project.getProperty(BASE_URI)}/tools/apposite/unattended/v1/synchronize"
+         println "Synchronizing local NetKernel instance.."
+         println new URL(url).text
+         println "Waiting for $SLEEP_TIME seconds to let NetKernel reindex.."
+         sleep SLEEP_TIME * 1000
+      }
+   }
 }
