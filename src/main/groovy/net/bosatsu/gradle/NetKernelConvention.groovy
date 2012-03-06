@@ -17,6 +17,8 @@
 package net.bosatsu.gradle
 
 import org.gradle.api.Project
+
+import net.bosatsu.util.netkernel.AppositeHelper
 import net.bosatsu.util.netkernel.RepoHelper
 import net.bosatsu.util.HashHelper
 import net.bosatsu.util.SigningHelper
@@ -30,6 +32,7 @@ class NetKernelConvention {
 	
 	Project p
 	
+   AppositeHelper appositeHelper
 	RepoHelper repoHelper
 	HashHelper hashHelper
 	SigningHelper signHelper
@@ -86,6 +89,7 @@ class NetKernelConvention {
 			netKernelRepoDir = p.file(repoLocation)
 		}
 		
+      appositeHelper = new AppositeHelper(p.netkernelbaseuri)
 		repoHelper = new RepoHelper(netKernelRepoDir)
 		hashHelper = new HashHelper()
 		signHelper = new SigningHelper()
