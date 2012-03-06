@@ -71,6 +71,7 @@ netkernelpubver=1.0.0
 netkernelpubbaseuri=file:/dir/where/you/want/the/repo/found/by/apposite
 netkernelpubname=A name for the repo
 netkernelpubdescr=A description of the repo
+netkernelbaseuri=http://localhost:1060
 
 c) Add something like the following to your module's build.gradle after the apply:
 
