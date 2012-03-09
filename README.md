@@ -24,7 +24,8 @@ This should point to a NetKernel installation. Future support will allow you to 
 ## 4. Configure your project to use plugin
 The minimum you need to add to your NetKernel module is a file called build.gradle that looks like the following:
 
-`apply plugin: 'netkernel'
+<pre>
+apply plugin: 'netkernel'
 
 dependencies {
    groovy localGroovy()
@@ -38,20 +39,23 @@ buildscript {
    dependencies {
       classpath group: 'net.bosatsu.gradle', name: 'nk-gradle-plugin', version: '0.0.14'
    }
-}`
+}
+</pre>
 
 You should now be able to say:
 
+<pre>
 gradle clean        ; cleans the build dir
 gradle nkpackage    ; compiles any Java/Groovy code, generates a module and builds a deployable
                     ; package with default settings
+</pre>
                     
 The module file itself will be put into build/modules. The package will be in build/packages.
 
 If you want to compile "in place", add the directory to NetKernel's etc/modules.xml and you 
 should be able to do:
 
-gradle compileGroovy    ; compiles both Groovy and Java code found in the module
+`gradle compileGroovy    ; compiles both Groovy and Java code found in the module`
 
 ## 5. Publishing packages to an Apposite Repository
 If you want to create an Apposite Repository, you will need the following 
@@ -64,7 +68,7 @@ For now, use the same password for the keystore and the key.
 
 b) Add the following to your $HOME/.gradle/gradle.properties
 
-`
+<pre>
 netkernelrepo=/dir/where/you/want/the/repo/created/locally
 netkernelrepokeystore=/dir/in/which/to/find/your/keystore
 netkernelpubrepo=RepoName
@@ -72,24 +76,31 @@ netkernelpubver=1.0.0
 netkernelpubbaseuri=file:/dir/where/you/want/the/repo/found/by/apposite
 netkernelpubname=A name for the repo
 netkernelpubdescr=A description of the repo
-`
+</pre>
 
 c) Add something like the following to your module's build.gradle after the apply:
 
+<pre>
 nkconfig {
-	definePackage(name: 'package-a', description: "MyPackage", version: '0.0.1', 
-	   repo: 'RepoName', repoversion: '1.0.0', set: 'main')
+   definePackage(
+      name: 'package-a', 
+      description: "MyPackage", 
+      version: '0.0.1', 
+      repo: 'RepoName', 
+      repoversion: '1.0.0', 
+      set: 'main')
 }
+</pre>
 
 d) No you should be able to publish your package into the repository:
 
-gradle nkpublish -PnetKernelKeyStoreUser=<keyid> -PnetKernelKeyStorePassword=<password>
+`gradle nkpublish -PnetKernelKeyStoreUser=<keyid> -PnetKernelKeyStorePassword=<password>`
 
 Note: As mentioned above, for now the keystore and keyid should be the same.
 
 This should produce a valid repository structure. You can verify it by saying:
 
-gradle nkrepoverify -PnetKernelKeyStoreUser=<keyid> -PnetKernelKeyStorePassword=<password>
+`gradle nkrepoverify -PnetKernelKeyStoreUser=<keyid> -PnetKernelKeyStorePassword=<password>`
 
 The repo that is generated will be regenerated as needed. You'll probably want to be careful
 with it and use version control or something on it.
@@ -98,7 +109,7 @@ e) Use rsync or something to connect this repo to a production system (or just u
 are running locally. To generate the repo connection settings to upload to an Apposite
 instance:
 
-gradle nkrepoconnection -PnetKernelKeyStoreUser=<keyid> -PnetKernelKeyStorePassword=<password>
+`gradle nkrepoconnection -PnetKernelKeyStoreUser=<keyid> -PnetKernelKeyStorePassword=<password>`
 
 This will generate the Zip file in build/repos.
 
@@ -115,7 +126,7 @@ b) Add the following to your $HOME/.gradle/gradle.properties file:
 
 c) Update the dependencies in your project's build.gradle file:
 
-`
+<pre>
 buildscript {
   repositories {
     mavenLocal()
@@ -129,12 +140,14 @@ buildscript {
     classpath group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.1.2'
   }
 }
-`
+</pre>
 
 You should now be able to say:
 
+<pre>
 gradle synchronize      ; synchronizes the NetKernel instance with the Apposite Repository
 gradle installorupdate  ; installs or updates all packages built
+</pre>
 
 ## NOTES
 This is just a quick introduction. There is also support for multiple modules, multiple packages, etc.  But we will add more documentation and examples shortly. This will also become a useful framework for creating modules and managing many aspects of the NetKernel development process.
