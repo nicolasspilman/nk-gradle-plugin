@@ -2,3 +2,4 @@
 - Better error handling around keystores
 - Force a jar task if there are no Java or Groovy files
 - Retrieve dependent libraries from Maven rather than storing them in a CM system?
+- Create task to automatically create apposite repo reference from gradle tool

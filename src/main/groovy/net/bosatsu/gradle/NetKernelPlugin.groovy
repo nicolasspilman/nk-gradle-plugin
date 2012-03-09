@@ -115,8 +115,8 @@ class NetKernelPlugin implements Plugin<Project> {
                packageTask = packageTaskName
                initialize()
             }
-            
-            project.tasks.add(name: "nkinstallorupdate", type: NetKernelInstallOrUpdatePackage) 
+
+            project.tasks.add(name: "nkinstallorupdate-$name", type: NetKernelInstallOrUpdatePackage)
             {
                packageName = name
                packageVersion = p['version']
@@ -155,6 +155,10 @@ class NetKernelPlugin implements Plugin<Project> {
             project.tasks.nkrepoconnection.dependsOn 'nkrepoconnectionsettings'
             project.tasks.add(name: "nksynchronize", type: NetKernelSynchronize)
 
+            project.tasks.add(name: "nkinstallorupdate")
+            project.tasks.nkinstallorupdate.dependsOn {
+               project.tasks.findAll { task -> task.name.startsWith('nkinstallorupdate-') }
+            }
          }
          // TODO: Publish depends on package?
       }
