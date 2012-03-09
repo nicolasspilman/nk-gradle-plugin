@@ -101,7 +101,7 @@ nkconfig {
 d) No you should be able to publish your package into the repository:
 
 <pre>
-gradle nkpublish -PnetKernelKeyStoreUser=<keyid> -PnetKernelKeyStorePassword=<password>
+gradle nkpublish -PnetKernelKeyStoreUser={keyid} -PnetKernelKeyStorePassword={password}
 </pre>
 
 Note: As mentioned above, for now the keystore and keyid should be the same.
@@ -109,7 +109,7 @@ Note: As mentioned above, for now the keystore and keyid should be the same.
 This should produce a valid repository structure. You can verify it by saying:
 
 <pre>
-gradle nkrepoverify -PnetKernelKeyStoreUser=<keyid> -PnetKernelKeyStorePassword=<password>
+gradle nkrepoverify -PnetKernelKeyStoreUser={keyid} -PnetKernelKeyStorePassword={password}
 </pre>
 
 The repo that is generated will be regenerated as needed. You'll probably want to be careful
@@ -120,7 +120,7 @@ are running locally. To generate the repo connection settings to upload to an Ap
 instance:
 
 <pre>
-gradle nkrepoconnection -PnetKernelKeyStoreUser=<keyid> -PnetKernelKeyStorePassword=<password>
+gradle nkrepoconnection -PnetKernelKeyStoreUser={keyid} -PnetKernelKeyStorePassword={password}
 </pre>
 
 This will generate the Zip file in build/repos.
@@ -135,7 +135,7 @@ minimal amount of work is to have both the NetKernel instance and apposite repo 
 b) Add the following to your $HOME/.gradle/gradle.properties file:
 
 <pre>
-netkernelbaseuri=http://<hostname>:1060
+netkernelbaseuri=http://{hostname}:1060
 </pre>
 
 c) Update the dependencies in your project's build.gradle file:
