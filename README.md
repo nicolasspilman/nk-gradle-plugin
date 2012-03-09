@@ -10,14 +10,18 @@ Install Gradle (http://gradle.org)
 ## 2. Install this gradle plugin
 From this directory, run:
 
-`> gradle install`
+<pre>
+> gradle install
+</pre>
 
 This will install the plugin into a local Maven repository in your home directory (~/.m2). You do not need Maven installed for this to happen.
 
 ## 3. Configure your environment
 In your $HOME/.gradle/gradle.properties file put at least the following:
 
-`netkernelroot=/dir/where/you/installed/netkernel/EE-5.1.1/`
+<pre>
+netkernelroot=/dir/where/you/installed/netkernel/EE-5.1.1/
+</pre>
 
 This should point to a NetKernel installation. Future support will allow you to download NetKernel as part of the build. If you have NetKernel running, the build system will find it and where it is installed, but you'll probably want to add the property as above.
 
@@ -55,7 +59,9 @@ The module file itself will be put into build/modules. The package will be in bu
 If you want to compile "in place", add the directory to NetKernel's etc/modules.xml and you 
 should be able to do:
 
-`gradle compileGroovy    ; compiles both Groovy and Java code found in the module`
+<pre>
+gradle compileGroovy    ; compiles both Groovy and Java code found in the module
+</pre>
 
 ## 5. Publishing packages to an Apposite Repository
 If you want to create an Apposite Repository, you will need the following 
@@ -94,13 +100,17 @@ nkconfig {
 
 d) No you should be able to publish your package into the repository:
 
-`gradle nkpublish -PnetKernelKeyStoreUser=<keyid> -PnetKernelKeyStorePassword=<password>`
+<pre>
+gradle nkpublish -PnetKernelKeyStoreUser=<keyid> -PnetKernelKeyStorePassword=<password>
+</pre>
 
 Note: As mentioned above, for now the keystore and keyid should be the same.
 
 This should produce a valid repository structure. You can verify it by saying:
 
-`gradle nkrepoverify -PnetKernelKeyStoreUser=<keyid> -PnetKernelKeyStorePassword=<password>`
+<pre>
+gradle nkrepoverify -PnetKernelKeyStoreUser=<keyid> -PnetKernelKeyStorePassword=<password>
+</pre>
 
 The repo that is generated will be regenerated as needed. You'll probably want to be careful
 with it and use version control or something on it.
@@ -109,7 +119,9 @@ e) Use rsync or something to connect this repo to a production system (or just u
 are running locally. To generate the repo connection settings to upload to an Apposite
 instance:
 
-`gradle nkrepoconnection -PnetKernelKeyStoreUser=<keyid> -PnetKernelKeyStorePassword=<password>`
+<pre>
+gradle nkrepoconnection -PnetKernelKeyStoreUser=<keyid> -PnetKernelKeyStorePassword=<password>
+</pre>
 
 This will generate the Zip file in build/repos.
 
@@ -122,7 +134,9 @@ minimal amount of work is to have both the NetKernel instance and apposite repo 
 
 b) Add the following to your $HOME/.gradle/gradle.properties file:
 
-`netkernelbaseuri=http://<hostname>:1060`
+<pre>
+netkernelbaseuri=http://<hostname>:1060
+</pre>
 
 c) Update the dependencies in your project's build.gradle file:
 
