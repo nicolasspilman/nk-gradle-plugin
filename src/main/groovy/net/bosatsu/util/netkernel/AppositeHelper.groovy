@@ -48,7 +48,7 @@ class AppositeHelper {
    }
 
    private def performChangeAndWait(String action, String packageName, String packageVersion, int attempts, int interval) {
-      HttpGet httpGet = new HttpGet("$baseUrl/$action?install=$packageName")
+      HttpGet httpGet = new HttpGet("$baseUrl/change?$action=$packageName")
       HttpResponse response = httpClient.execute(httpGet)
       println response.entity.content.text
 
