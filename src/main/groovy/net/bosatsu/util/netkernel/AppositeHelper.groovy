@@ -4,6 +4,7 @@ import org.apache.http.HttpResponse
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.DefaultHttpClient
+import org.gradle.api.GradleException;
 
 
 
@@ -21,6 +22,10 @@ class AppositeHelper {
       HttpGet httpGet = new HttpGet("$baseUrl/synchronize")
       HttpResponse response = httpClient.execute(httpGet)
       println response.entity.content.text
+      
+      if(response.statusLine.statusCode != 200) {
+         throw new GradleException("Problem occured calling NetKernel to synchronize apposite repositories.")
+      }
    }
 
    def isInstalled(String packageName) {
@@ -30,12 +35,17 @@ class AppositeHelper {
    def isInstalled(String packageName, String packageVersion) {
       HttpGet httpGet = new HttpGet("$baseUrl/installed?match=$packageName")
       HttpResponse response = httpClient.execute(httpGet)
-      def responseXml = new XmlSlurper().parse(response.entity.content)
 
-      if(packageVersion) {
-         responseXml.row?.INSTALLED.text() == "true" && responseXml.row?.VP.text() == packageVersion
+      if(response.statusLine.statusCode == 200) {
+         def responseXml = new XmlSlurper().parse(response.entity.content)
+
+         if(packageVersion) {
+            responseXml.row?.INSTALLED.text() == "true" && responseXml.row?.VP.text() == packageVersion
+         } else {
+            responseXml.row?.INSTALLED.text() == "true"
+         }
       } else {
-         responseXml.row?.INSTALLED.text() == "true"
+         throw new GradleException("Problem occured calling NetKernel to check status of package $packageName")
       }
    }
 
@@ -52,15 +62,20 @@ class AppositeHelper {
       HttpResponse response = httpClient.execute(httpGet)
       println response.entity.content.text
 
-      boolean installed = false
-      
-      while(!installed && attempts) {
-         sleep(interval)
-         if(isInstalled(packageName, packageVersion)) {
-            println "Package [name: $packageName, version: $packageVersion] has been commissioned."
-            return
+      if(response.statusLine.statusCode == 200) {
+
+         boolean installed = false
+
+         while(!installed && attempts) {
+            sleep(interval)
+            if(isInstalled(packageName, packageVersion)) {
+               println "Package [name: $packageName, version: $packageVersion] has been commissioned."
+               return
+            }
+            attempts--
          }
-         attempts--
+      } else {
+         throw new GradleException("Error occurred calling NetKernel to $action package $packageName")
       }
    }
 }
