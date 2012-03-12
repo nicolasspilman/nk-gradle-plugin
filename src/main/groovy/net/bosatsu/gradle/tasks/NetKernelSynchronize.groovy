@@ -22,7 +22,7 @@ import org.gradle.api.DefaultTask
 
 class NetKernelSynchronize extends DefaultTask {
 
-   static def SLEEP_TIME = 5
+   static def SLEEP_TIME = 10
 
    @org.gradle.api.tasks.TaskAction
    void synchronize() {

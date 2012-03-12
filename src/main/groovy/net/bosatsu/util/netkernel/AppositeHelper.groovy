@@ -74,6 +74,9 @@ class AppositeHelper {
             }
             attempts--
          }
+         
+         println "Package [name: $packageName, version: $packageVersion] could not be verified."
+         
       } else {
          throw new GradleException("Error occurred calling NetKernel to $action package $packageName")
       }
