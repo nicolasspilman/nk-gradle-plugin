@@ -163,7 +163,6 @@ class NetKernelPlugin implements Plugin<Project> {
          // TODO: Publish depends on package?
       }
 
-
       project.afterEvaluate {
          unresolvedDependencies.each { d ->
             println "Checking related project $d"
@@ -497,16 +496,18 @@ class NetKernelPlugin implements Plugin<Project> {
       def dependencyMap = [:]
 
       libList.each { f ->
-         def jarInfo = jarHelper.parseJarName(f.getName())
+         if(jarHelper.isJarFile(f.name())) {
+            def jarInfo = jarHelper.parseJarName(f.getName())
 
-         if((jarInfo.classifier != null) &&
-         (jarInfo.classifier.equals("sources") ||
-         (jarInfo.classifier.equals("javadoc"))))
-         {
-            println "Ignoring: ${jarInfo.base}-${jarInfo.version}-${jarInfo.classifier}"
+            if((jarInfo.classifier != null) &&
+            (jarInfo.classifier.equals("sources") ||
+            (jarInfo.classifier.equals("javadoc"))))
+            {
+               println "Ignoring: ${jarInfo.base}-${jarInfo.version}-${jarInfo.classifier}"
 
-         } else {
-            dependencyMap[jarInfo.base] = jarInfo
+            } else {
+               dependencyMap[jarInfo.base] = jarInfo
+            }
          }
       }
       dependencyMap

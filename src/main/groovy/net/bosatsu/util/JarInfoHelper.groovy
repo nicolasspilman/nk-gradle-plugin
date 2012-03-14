@@ -18,8 +18,8 @@ package net.bosatsu.util
 
 class JarInfoHelper {
 	JarInfo parseJarName(String jarName) {
-		if((jarName == null) || (!jarName.endsWith(".jar"))) {
-			throw new IllegalArgumentException("Invalid jar file name")
+		if(!isJarFile(jarName)) {
+			throw new IllegalArgumentException("Invalid jar file name: $jarName")
 		}
 		
 		def base = jarName - '.jar'
@@ -53,4 +53,8 @@ class JarInfoHelper {
 		
 		retValue
 	}
+   
+   boolean isJarFile(String jarName) {
+      jarName?.endsWith(".jar")
+   }
 }
