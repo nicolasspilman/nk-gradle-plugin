@@ -39,10 +39,12 @@ class AppositeHelper {
       if(response.statusLine.statusCode == 200) {
          def responseXml = new XmlSlurper().parse(response.entity.content)
 
+         def row = responseXml.row.find { it.NAME.text() == packageName }
+         
          if(packageVersion) {
-            responseXml.row?.INSTALLED.text() == "true" && responseXml.row?.VP.text() == packageVersion
+            row?.INSTALLED.text() == "true" && row?.VP.text() == packageVersion
          } else {
-            responseXml.row?.INSTALLED.text() == "true"
+            row?.INSTALLED.text() == "true"
          }
       } else {
          throw new GradleException("Problem occured calling NetKernel to check status of package $packageName")
@@ -81,4 +83,5 @@ class AppositeHelper {
          throw new GradleException("Error occurred calling NetKernel to $action package $packageName")
       }
    }
+   
 }
