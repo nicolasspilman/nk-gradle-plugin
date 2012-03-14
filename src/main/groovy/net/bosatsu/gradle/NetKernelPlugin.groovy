@@ -496,7 +496,7 @@ class NetKernelPlugin implements Plugin<Project> {
       def dependencyMap = [:]
 
       libList.each { f ->
-         if(jarHelper.isJarFile(f.name())) {
+         if(jarHelper.isJarFile(f.getName())) {
             def jarInfo = jarHelper.parseJarName(f.getName())
 
             if((jarInfo.classifier != null) &&
