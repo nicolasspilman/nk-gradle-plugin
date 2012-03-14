@@ -4,6 +4,7 @@ apply {
 }
 
 repositories {
+  mavenLocal()
   mavenCentral()
 }
 
