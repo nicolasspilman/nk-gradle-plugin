@@ -17,8 +17,9 @@
 package net.bosatsu.gradle.tasks
 
 import java.io.ByteArrayInputStream
+
+import org.gradle.api.GradleException
 import org.gradle.api.tasks.Copy
-import groovy.xml.StreamingMarkupBuilder
 import groovy.xml.MarkupBuilder
 import java.security.MessageDigest
 
