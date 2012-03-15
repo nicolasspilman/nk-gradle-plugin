@@ -92,11 +92,21 @@ nkconfig {
       name: 'package-a', 
       description: "MyPackage", 
       version: '0.0.1', 
+      modules: [
+        'urn.com.sample.module'
+      ],
+      dependencies: {
+        depends name: "package-name", version: ">= 1.0.0"
+      }
       repo: 'RepoName', 
       repoversion: '1.0.0', 
       set: 'main')
 }
 </pre>
+
+The dependency block can contain one of the following directives: depends, suggests, recommends, conflicts and replaces
+
+Additionally, the version block can contain one of the following equality operators: > >= = <= <
 
 d) No you should be able to publish your package into the repository:
 
@@ -149,7 +159,7 @@ buildscript {
   }
 
   dependencies {
-    classpath group: 'net.bosatsu.gradle', name: 'nk-gradle-plugin', version: '0.0.14-SNAPSHOT'
+    classpath group: 'net.bosatsu.gradle', name: 'nk-gradle-plugin', version: '0.0.15'
     classpath group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.1.2'
     classpath group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.1.2'
   }

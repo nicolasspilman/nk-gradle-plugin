@@ -113,6 +113,7 @@ class NetKernelPlugin implements Plugin<Project> {
             project.tasks.add(name: "nkpublish-$name", type: NetKernelPublishPackage) {
                packageDef = p
                packageTask = packageTaskName
+               packageDependencies = p['dependencies']
                initialize()
             }
 

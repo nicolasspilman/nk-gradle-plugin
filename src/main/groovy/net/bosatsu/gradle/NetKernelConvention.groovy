@@ -19,133 +19,136 @@ package net.bosatsu.gradle
 import org.gradle.api.Project
 
 import net.bosatsu.util.netkernel.AppositeHelper
+import net.bosatsu.util.netkernel.PackageDependencyHelper;
 import net.bosatsu.util.netkernel.RepoHelper
 import net.bosatsu.util.HashHelper
 import net.bosatsu.util.SigningHelper
 
 class NetKernelConvention {
-	File netKernelRootDir
-	File netKernelRepoDir
-	File netKernelRepoKeyStore
-	String netKernelKeyStoreUser
-	String netKernelKeyStorePassword
-	
-	Project p
-	
+   File netKernelRootDir
+   File netKernelRepoDir
+   File netKernelRepoKeyStore
+   String netKernelKeyStoreUser
+   String netKernelKeyStorePassword
+
+   Project p
+
    AppositeHelper appositeHelper
-	RepoHelper repoHelper
-	HashHelper hashHelper
-	SigningHelper signHelper
-	
-	static String LOCAL_INSTALLATION_URL = "http://localhost:1060/tools/scriptplaypen?action2=execute&type=gy&example&identifier&name&space&script=context.createResponseFrom%28context.source%28%22netkernel:/config/netkernel.install.path%22%29%29"
+   RepoHelper repoHelper
+   HashHelper hashHelper
+   SigningHelper signHelper
 
-	def modules
-	def relatedProjects = []
+   static String LOCAL_INSTALLATION_URL = "http://localhost:1060/tools/scriptplaypen?action2=execute&type=gy&example&identifier&name&space&script=context.createResponseFrom%28context.source%28%22netkernel:/config/netkernel.install.path%22%29%29"
 
-	def packages = []
-	
-	NetKernelConvention(Project p) {
-		this.p = p
-		
-		def overridden = false
-		def location
-		def repoLocation
-		
-		if(p.hasProperty('netkernelroot')) {
-			location = p.netkernelroot
-		}
-		
-		if(location == null) {
-			location = checkForRunningSystem(p)
-			// TODO: Write out to .gradle/gradle.properties?
-		}
-		
-		if(System.properties.netkernelroot) {
-			overridden = netKernelRootDir != null
-			location = System.properties.netkernelroot
-		}
-		
-		if(location != null) {
-			netKernelRootDir = p.file(location)
+   def modules
+   def relatedProjects = []
 
-			if(netKernelRootDir.exists()) {
-				if(overridden) {
-					println "Overriding NetKernel installation to: ${location}"
-				} else {
-					println "Found a NetKernel installation at: ${location}"				
-				}
-			
-			} else {
-				println "NetKernel Gradle plugin currently requires you to specify a NetKernel installation directory."
-				println 'Please put a gradle.properties file in user.home/.gradle or use: gradle -Dnetkernelhome=<installation>'
-			}
-		}
-		
-		if(p.hasProperty('netkernelrepo')) {
-			repoLocation = p.netkernelrepo
-		}
-		
-		if(repoLocation != null) {
-			netKernelRepoDir = p.file(repoLocation)
-		}
-		
+   def packages = []
+
+   NetKernelConvention(Project p) {
+      this.p = p
+
+      def overridden = false
+      def location
+      def repoLocation
+
+      if(p.hasProperty('netkernelroot')) {
+         location = p.netkernelroot
+      }
+
+      if(location == null) {
+         location = checkForRunningSystem(p)
+         // TODO: Write out to .gradle/gradle.properties?
+      }
+
+      if(System.properties.netkernelroot) {
+         overridden = netKernelRootDir != null
+         location = System.properties.netkernelroot
+      }
+
+      if(location != null) {
+         netKernelRootDir = p.file(location)
+
+         if(netKernelRootDir.exists()) {
+            if(overridden) {
+               println "Overriding NetKernel installation to: ${location}"
+            } else {
+               println "Found a NetKernel installation at: ${location}"
+            }
+         } else {
+            println "NetKernel Gradle plugin currently requires you to specify a NetKernel installation directory."
+            println 'Please put a gradle.properties file in user.home/.gradle or use: gradle -Dnetkernelhome=<installation>'
+         }
+      }
+
+      if(p.hasProperty('netkernelrepo')) {
+         repoLocation = p.netkernelrepo
+      }
+
+      if(repoLocation != null) {
+         netKernelRepoDir = p.file(repoLocation)
+      }
+
       appositeHelper = new AppositeHelper(p.netkernelbaseuri)
-		repoHelper = new RepoHelper(netKernelRepoDir)
-		hashHelper = new HashHelper()
-		signHelper = new SigningHelper()
-		
-		if(p.hasProperty('netkernelrepokeystore')) {
-			netKernelRepoKeyStore = p.file(p.netkernelrepokeystore)
-		}
-	}
-	
-	def checkForRunningSystem(Project p) {
-		def retValue = null
-		
-		try {
-		   def u = new URL(LOCAL_INSTALLATION_URL)
-		   def installation = u.getText()
-		
-		   if(p.file(installation).exists()) {
-			  if(installation.startsWith("file:")) {
-				installation = installation.substring(4)
-			  }
-		      println "Discovered NetKernel installation: $installation"
-		      retValue = installation
-		   } else {
-		  	  println "Ignoring non-existent installation: $installation"
-		   }
+      repoHelper = new RepoHelper(netKernelRepoDir)
+      hashHelper = new HashHelper()
+      signHelper = new SigningHelper()
 
-		} catch(Throwable t) {
-			//t.printStackTrace()
-			println t.getMessage()
-		}
-		
-		retValue
-	}
-	
-	def dependsOnNetkernelModule(String moduleName) {
-		Project otherProject = p.project(moduleName)
+      if(p.hasProperty('netkernelrepokeystore')) {
+         netKernelRepoKeyStore = p.file(p.netkernelrepokeystore)
+      }
+   }
 
-		p.repositories {
-			flatDir(name: "${otherProject.projectDir}-lib", dirs: ["${otherProject.projectDir}/lib"])
-		}
-		
-		p.dependencies {
-	        compile otherProject
-		}
-	}
-	
-	def nkconfig(Closure closure) {
-		closure.delegate = this
-		closure()
-	}
-	
-	def definePackage(Map map) {
-		if(map['name'] != null && map['description'] != null && map['version'] != null) {
-			packages << map		
-		} else {
-			println "WARNING: Specified package: $map must include 'name', 'description' and 'version' attributes."
-		}
-	}
+   def checkForRunningSystem(Project p) {
+      def retValue = null
+
+      try {
+         def u = new URL(LOCAL_INSTALLATION_URL)
+         def installation = u.getText()
+
+         if(p.file(installation).exists()) {
+            if(installation.startsWith("file:")) {
+               installation = installation.substring(4)
+            }
+            println "Discovered NetKernel installation: $installation"
+            retValue = installation
+         } else {
+            println "Ignoring non-existent installation: $installation"
+         }
+      } catch(Throwable t) {
+         //t.printStackTrace()
+         println t.getMessage()
+      }
+
+      retValue
+   }
+
+   def dependsOnNetkernelModule(String moduleName) {
+      Project otherProject = p.project(moduleName)
+
+      p.repositories {
+         flatDir(name: "${otherProject.projectDir}-lib", dirs: [
+            "${otherProject.projectDir}/lib"
+         ])
+      }
+
+      p.dependencies { compile otherProject }
+   }
+
+   def nkconfig(Closure closure) {
+      closure.delegate = this
+      closure()
+   }
+
+   def definePackage(Map map) {
+      if(map['name'] != null && map['description'] != null && map['version'] != null) {
+         if(map['dependencies']) {
+            def packageDependencyHelper = new PackageDependencyHelper(map['dependencies'])
+            map['dependencies'] = packageDependencyHelper.processDependencies()
+         }
+         packages << map
+      } else {
+         println "WARNING: Specified package: $map must include 'name', 'description' and 'version' attributes."
+      }
+   }
 }
