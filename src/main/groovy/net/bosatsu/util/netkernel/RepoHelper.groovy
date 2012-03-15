@@ -108,7 +108,7 @@ class RepoHelper {
 
          def repos = getRepos(repoName, repoVersion, distributionType)
          repos.each { set, repo ->
-            if(repo.package.size() != 0 && repo.package.findAll{ it.name.text() == packageName && it.name}   ) {
+            if(repo.package.size() != 0 && repo.package.findAll{ it.name.text() == packageName && it.name && it.version.text() == packageVersion }   ) {
                throw new GradleException("Found package [name: $packageName, version: $packageVersion] in repository [${repoName}/${repoVersion}/${distributionType}/${set}]")
             }
          }
