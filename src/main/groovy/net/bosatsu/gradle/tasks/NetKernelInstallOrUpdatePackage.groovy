@@ -29,10 +29,10 @@ class NetKernelInstallOrUpdatePackage extends DefaultTask {
    void installOrUpdate() {
       if(project.appositeHelper.isInstalled(packageName)) {
          println "Package $packageName already installed.  Invoking update."
-         project.appositeHelper.update(packageName, packageVersion, 5, 3000)
+         project.appositeHelper.update(packageName, packageVersion, 10, 3000)
       } else {
          println "Package $packageName not found.  Invoking install."
-         project.appositeHelper.install(packageName, packageVersion, 5, 3000)
+         project.appositeHelper.install(packageName, packageVersion, 10, 3000)
       }
    }
 }

@@ -22,7 +22,7 @@ class AppositeHelper {
       HttpGet httpGet = new HttpGet("$baseUrl/synchronize")
       HttpResponse response = httpClient.execute(httpGet)
       println response.entity.content.text
-      
+
       if(response.statusLine.statusCode != 200) {
          throw new GradleException("Problem occured calling NetKernel to synchronize apposite repositories.")
       }
@@ -40,7 +40,7 @@ class AppositeHelper {
          def responseXml = new XmlSlurper().parse(response.entity.content)
 
          def row = responseXml.row.find { it.NAME.text() == packageName }
-         
+
          if(packageVersion) {
             row?.INSTALLED.text() == "true" && row?.VP.text() == packageVersion
          } else {
@@ -76,12 +76,10 @@ class AppositeHelper {
             }
             attempts--
          }
-         
-         println "Package [name: $packageName, version: $packageVersion] could not be verified."
-         
+
+         throw new GradleException("Package [name: $packageName, version: $packageVersion] could not be verified.")
       } else {
          throw new GradleException("Error occurred calling NetKernel to $action package $packageName")
       }
    }
-   
 }
