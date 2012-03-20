@@ -16,40 +16,49 @@
 
 package net.bosatsu.util
 
+import junit.framework.Assert
+
 import org.junit.Before
 import org.junit.Test
 
 import static org.junit.Assert.*
 
 class HashHelperTest {
-    def HashHelper helper
-	def f
+   def HashHelper helper
+   def f
 
-    @Before
-    void setUp()
-    {
-        URL url = this.getClass().getResource('/test.jar')
-		f = new File(url.getFile())
-        helper = new HashHelper()
-    }
+   @Before
+   void setUp() {
+      URL url = this.getClass().getResource('/test.jar')
+      f = new File(url.getFile())
+      helper = new HashHelper()
+   }
 
-	@Test
-	void testSha1() {
-		def result = helper.hashFile("SHA-1", f)
-	}
-	
-	@Test
-	void testSha256() {
-		def result = helper.hashFile("SHA-256", f)
-	}
-	
-	@Test
-	void testSha512() {
-		def result = helper.hashFile("SHA-512", f)
-	}
-	
-	@Test
-	void testMD5() {
-		def result = helper.hashFile("MD5", f)
-	}
+   @Test
+   void testSha1() {
+      def result = helper.hashFile("SHA-1", f)
+   }
+
+   @Test
+   void testSha256() {
+      def result = helper.hashFile("SHA-256", f)
+   }
+
+   @Test
+   void testSha512() {
+      def result = helper.hashFile("SHA-512", f)
+   }
+
+   @Test
+   void testMD5() {
+      def result = helper.hashFile("MD5", f)
+   }
+
+   @Test
+   void testWithPrecedingZeroInResultingHash() {
+      f = new File(this.getClass().getResource('/231.txt').getFile())
+      def result = helper.hashFile("SHA-256", f)
+      Assert.assertEquals("075198bfe61765d35f990debe90959d438a943ceeb9d39440e7db5455d449086", result)
+   }
+   
 }
