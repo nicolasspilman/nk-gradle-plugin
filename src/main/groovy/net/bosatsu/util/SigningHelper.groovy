@@ -27,6 +27,8 @@ import java.security.cert.CertificateFactory
 class SigningHelper {
 	int KB = 1024
 	int MB = 1024*KB
+   
+   def hashHelper = new HashHelper()
 	
 	String signFileSignature(File f, String keyId, String password, File keystore) {
 		String retValue = null
@@ -42,8 +44,7 @@ class SigningHelper {
 			f.eachByte(MB) { byte[] buf, int bytesRead ->
 				signature.update(buf, 0, bytesRead)
 			}
-			
-			retValue = new BigInteger(1, signature.sign()).toString(16)
+			hashHelper.toHexString(signature.sign())
 		} catch(Throwable t) {
 			t.printStackTrace()
 		}
@@ -75,8 +76,7 @@ class SigningHelper {
         		signature.update(b);
         	}
         		
-        	byte [] results = signature.sign()
-        	retValue = new BigInteger(1, results).toString(16)
+         hashHelper.toHexString(signature.sign())
 		} catch(Throwable t) {
 			t.printStackTrace()
 		}
@@ -93,7 +93,9 @@ class SigningHelper {
 			def pw = new KeyStore.PasswordProtection(password.toCharArray())
 			def cert = ks.getCertificate(keyId)
 			
-			byte [] sig = new BigInteger(sigString,16).toByteArray()
+         byte[] sig = hashHelper.fromHexString(sigString)
+         
+         sigString.getBytes
 
 			def signature = Signature.getInstance("SHA1withRSA")
 			signature.initVerify(cert)

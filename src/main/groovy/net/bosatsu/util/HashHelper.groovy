@@ -63,7 +63,7 @@ class HashHelper {
    /**
     * Shamelessly stolen from 1060 Research
     */
-   private String toHexString(byte[] ba) {
+   def toHexString(byte[] ba) {
       byte[] hex = new byte[2 * ba.length];
       int index = 0;
       for (byte b : ba) {
@@ -80,5 +80,16 @@ class HashHelper {
          e.printStackTrace();
       }
       return result;
+   }
+
+   byte[] fromHexString(String s) {
+      byte[]b =new byte[s.length()/2];
+      int k=0;
+      for(int i=0; i<s.length()/2; i++) {
+         Integer j=Integer.parseInt(s.substring(2*i, (2*i)+2), 16);
+         b[k]=j.byteValue();
+         k++;
+      }
+      return b;
    }
 }
