@@ -46,6 +46,8 @@ class NetKernelConvention {
    def packages = []
 
    NetKernelConvention(Project p) {
+      println "Calling NetKernelConvention for $p"
+      
       this.p = p
 
       def overridden = false

@@ -3,3 +3,10 @@
 - Force a jar task if there are no Java or Groovy files
 - Retrieve dependent libraries from Maven rather than storing them in a CM system?
 - Create task to automatically create apposite repo reference from gradle tool
+
+
+Sections
+module stuff (compile, jar) - modules
+package stuff (nkpackage) - root
+repository (repohelper, nkpublish, hashing, signing, etc.) - root
+running netKernel instance stuff (nksynchronize, nkinstallorupdate) - uber root

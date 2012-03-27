@@ -169,8 +169,8 @@ buildscript {
 You should now be able to say:
 
 <pre>
-gradle synchronize      ; synchronizes the NetKernel instance with the Apposite Repository
-gradle installorupdate  ; installs or updates all packages built
+gradle nksynchronize  ; synchronizes the NetKernel instance with the Apposite Repository
+gradle nkcommission   ; installs or updates all packages built
 </pre>
 
 ## NOTES

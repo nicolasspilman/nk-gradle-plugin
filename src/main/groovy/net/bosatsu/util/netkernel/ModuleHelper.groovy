@@ -16,19 +16,36 @@
 
 package net.bosatsu.util.netkernel
 
+import groovy.xml.MarkupBuilder;
+import groovy.xml.StreamingMarkupBuilder;
+import groovy.xml.XmlUtil;
+
 class ModuleHelper {
-    
-    def getModuleInfo(def moduleFile) {
-        def moduleInfo = new XmlSlurper().parse(moduleFile)
-    }
-    
-    def getModuleArchiveName(def moduleFile) {
-        def moduleInfo = getModuleInfo(moduleFile)
-        
-        def moduleName = moduleInfo.meta.identity.uri.text()
-        def moduleVersion = moduleInfo.meta.identity.version.text()
-        def fileName = moduleName.replaceAll(':', '.')
-        
-        "${fileName}-${moduleVersion}.jar"
-    }
+
+   def getModuleInfo(def moduleFile) {
+      new XmlSlurper().parse(moduleFile)
+   }
+
+   def getModuleArchiveName(def moduleFile) {
+      def moduleInfo = getModuleInfo(moduleFile)
+
+      def moduleName = moduleInfo.meta.identity.uri.text()
+      def moduleVersion = moduleInfo.meta.identity.version.text()
+      def fileName = moduleName.replaceAll(':', '.')
+
+      "${fileName}-${moduleVersion}.jar"
+   }
+
+   def updateModuleVersion(def moduleFile, String version) {
+      def module = getModuleInfo(moduleFile)
+      module.meta.identity.version = version
+      StreamingMarkupBuilder builder = new StreamingMarkupBuilder()
+      def output = builder.bind {/* mkp.yieldUnescaped*/ mkp.yield module }
+      def fileContents = XmlUtil.serialize(output.toString())
+      
+      // Update module xml with build version
+      moduleFile.withWriter { writer ->
+         writer.write(fileContents)
+      }
+   }
 }

@@ -20,7 +20,7 @@ import net.bosatsu.util.netkernel.AppositeHelper
 
 import org.gradle.api.DefaultTask
 
-class NetKernelInstallOrUpdatePackage extends DefaultTask {
+class NetKernelCommissionPackage extends DefaultTask {
 
    def packageName
    def packageVersion
